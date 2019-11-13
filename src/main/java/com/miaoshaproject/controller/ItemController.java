@@ -3,6 +3,7 @@ package com.miaoshaproject.controller;
 import com.alibaba.druid.sql.ast.expr.SQLCaseExpr;
 import com.miaoshaproject.controller.viewobject.ItemVO;
 import com.miaoshaproject.dataobject.ItemDO;
+import com.miaoshaproject.dataobject.ItemStockDO;
 import com.miaoshaproject.error.BusinessException;
 import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.ItemService;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author：yuki
@@ -63,6 +66,20 @@ public class ItemController extends BaseController{
         return CommonReturnType.create(itemVO);
     }
 
+    //商品列表页面浏览
+    @RequestMapping(value = "/list", method = {RequestMethod.GET})
+    @ResponseBody
+    public CommonReturnType listItem(){
+        List<ItemModel> itemModelList = itemService.listItem();
+
+        //使用stream api将list的itemModel转化为ITEMVO
+        List<ItemVO> itemVOList =  itemModelList.stream().map(itemModel -> {
+            ItemVO itemVO = this.convertVOFromModel(itemModel);
+            return itemVO;
+        }).collect(Collectors.toList());
+
+        return CommonReturnType.create(itemVOList);
+    }
 
 
     private ItemVO convertVOFromModel(ItemModel itemModel){
