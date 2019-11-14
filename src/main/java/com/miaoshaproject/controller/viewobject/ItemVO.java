@@ -1,5 +1,7 @@
 package com.miaoshaproject.controller.viewobject;
 
+import org.joda.time.DateTime;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,6 +15,37 @@ import java.math.BigDecimal;
  */
 public class ItemVO {
     private Integer id;
+
+
+    //商品名
+    private String title;
+
+    //商品价格
+    private BigDecimal price;
+
+    //商品的库存
+    private Integer stock;
+
+    //商品的描述
+    private String description;
+
+    //商品销量
+    private Integer sales;
+
+    //商品描述图片的url
+    private String imgUrl;
+
+    //记录商品是否在秒杀活动中，以及对应的状态0：表示没有秒杀活动，1表示秒杀活动待开始， 2表示秒杀活动进行中
+    private Integer promoStatus;
+
+    //秒杀活动价格
+    private BigDecimal promoPrice;
+
+    //秒杀活动ID
+    private Integer promoId;
+
+    //秒杀活动开始时间
+    private String startDate;
 
     public Integer getId() {
         return id;
@@ -70,21 +103,35 @@ public class ItemVO {
         this.imgUrl = imgUrl;
     }
 
-    //商品名
-    private String title;
+    public Integer getPromoStatus() {
+        return promoStatus;
+    }
 
-    //商品价格
-    private BigDecimal price;
+    public void setPromoStatus(Integer promoStatus) {
+        this.promoStatus = promoStatus;
+    }
 
-    //商品的库存
-    private Integer stock;
+    public BigDecimal getPromoPrice() {
+        return promoPrice;
+    }
 
-    //商品的描述
-    private String description;
+    public void setPromoPrice(BigDecimal promoPrice) {
+        this.promoPrice = promoPrice;
+    }
 
-    //商品销量
-    private Integer sales;
+    public Integer getPromoId() {
+        return promoId;
+    }
 
-    //商品描述图片的url
-    private String imgUrl;
+    public void setPromoId(Integer promoId) {
+        this.promoId = promoId;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
 }

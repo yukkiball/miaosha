@@ -39,6 +39,9 @@ public class ItemModel {
     private String imgUrl;
 
 
+    //使用聚合模型，如果promoModel不为空，其拥有还未结束的秒杀活动
+    private PromoModel promoModel;
+
     public Integer getId() {
         return id;
     }
@@ -95,5 +98,11 @@ public class ItemModel {
         this.imgUrl = imgUrl;
     }
 
+    public PromoModel getPromoModel() {
+        return promoModel;
+    }
 
+    public void setPromoModel(PromoModel promoModel) {
+        this.promoModel = promoModel;
+    }
 }
