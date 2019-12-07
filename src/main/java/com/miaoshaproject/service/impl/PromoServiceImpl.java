@@ -1,6 +1,7 @@
 package com.miaoshaproject.service.impl;
 
 import com.miaoshaproject.dao.PromoDOMapper;
+import com.miaoshaproject.dao.RedisDao;
 import com.miaoshaproject.dataobject.PromoDO;
 import com.miaoshaproject.service.PromoService;
 import com.miaoshaproject.service.model.PromoModel;
@@ -23,11 +24,24 @@ public class PromoServiceImpl implements PromoService {
     @Autowired(required = false)
     private PromoDOMapper promoDOMapper;
 
+    @Autowired
+    private RedisDao redisDao;
+
     @Override
     public PromoModel getPromoByItemId(Integer itemId) {
 
         //获取对应商品的秒杀活动信息
-        PromoDO promoDO = promoDOMapper.selectByItemId(itemId);
+        //通过redis缓存优化
+        PromoDO promoDO = redisDao.getPromoDo(itemId);
+        if (promoDO == null){
+            promoDO = promoDOMapper.selectByItemId(itemId);
+            if (promoDO == null){
+                return null;
+            }else{
+                String res = redisDao.putPromoDo(promoDO);
+
+            }
+        }
 
         //dataobeject->model
         PromoModel promoModel = convertFromDataObeject(promoDO);
