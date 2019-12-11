@@ -1,5 +1,7 @@
 package com.miaoshaproject.dataobject;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class PromoDO {
@@ -28,7 +30,9 @@ public class PromoDO {
      *
      * @mbg.generated Thu Nov 14 10:09:36 CST 2019
      */
+    @JsonFormat(timezone="GMT+8")
     private Date startDate;
+    @JsonFormat(timezone="GMT+8")
     private Date endDate;
 
 

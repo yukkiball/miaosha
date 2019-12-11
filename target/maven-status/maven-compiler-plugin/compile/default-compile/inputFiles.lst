@@ -16,6 +16,7 @@ E:\project\miaosha\src\main\java\com\miaoshaproject\dataobject\PromoDO.java
 E:\project\miaosha\src\main\java\com\miaoshaproject\dataobject\ItemDO.java
 E:\project\miaosha\src\main\java\com\miaoshaproject\service\OrderService.java
 E:\project\miaosha\src\main\java\com\miaoshaproject\validator\ValidationResult.java
+E:\project\miaosha\src\main\java\com\miaoshaproject\dao\RedisDao.java
 E:\project\miaosha\src\main\java\com\miaoshaproject\dao\ItemDOMapper.java
 E:\project\miaosha\src\main\java\com\miaoshaproject\dataobject\OrderDO.java
 E:\project\miaosha\src\main\java\com\miaoshaproject\service\PromoService.java
