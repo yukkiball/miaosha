@@ -54,7 +54,7 @@ public class RedisDao {
             String key = "PromoId:" + promoDO.getItemId();
             byte[] bytes = ProtostuffIOUtil.toByteArray(promoDO, schema, LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
             //超时缓存
-            int timeout = 60 * 60;
+            int timeout = 30 * 60;
             String result = jedis.setex(key.getBytes(), timeout, bytes);
             return result;
         } finally {
