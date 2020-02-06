@@ -23,7 +23,7 @@ public class RedisDao {
     private RuntimeSchema<PromoDO> schema = RuntimeSchema.createFrom(PromoDO.class);
 
     public RedisDao(){
-        jedisPool = new JedisPool("121.36.50.232", 6380);
+        jedisPool = new JedisPool("127.0.0.1", 6379);
     }
 
     public PromoDO getPromoDo(Integer itemId){
