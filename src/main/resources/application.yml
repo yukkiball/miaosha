@@ -1,0 +1,15 @@
+server:
+  port: 8081
+
+
+mybatis:
+  mapperLocations: classpath:mapping/*.xml
+
+spring:
+  datasource:
+    name: miaosha
+    url: jdbc:mysql://121.36.50.232:3306/miaosha?serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
