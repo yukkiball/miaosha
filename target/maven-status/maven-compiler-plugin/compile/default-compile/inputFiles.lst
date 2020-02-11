@@ -30,6 +30,7 @@ F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\controller\OrderCont
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dataobject\SequenceDO.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\response\CommonReturnType.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\service\ItemService.java
+F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\config\RedisConfig.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\controller\viewobject\ItemVO.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dao\ItemStockDOMapper.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dao\OrderDOMapper.java

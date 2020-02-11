@@ -26,7 +26,7 @@ spring:
   resources:
     add-mappings: false
   redis:
-    host: 127.0.0.1
+    host: 172.17.0.3
     port: 6379
     database: 10
     #password:

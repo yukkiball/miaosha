@@ -2,6 +2,7 @@ com\miaoshaproject\error\EmBusinessError.class
 com\miaoshaproject\dao\SequenceDOMapper.class
 com\miaoshaproject\dao\ItemDOMapper.class
 com\miaoshaproject\dataobject\OrderDO.class
+com\miaoshaproject\config\RedisConfig.class
 com\miaoshaproject\service\model\UserModel.class
 com\miaoshaproject\dataobject\ItemDO.class
 com\miaoshaproject\dataobject\SequenceDO.class
