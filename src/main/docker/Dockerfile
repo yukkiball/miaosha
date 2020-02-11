@@ -1,8 +1,6 @@
 FROM java:8
 VOLUME /tmp
 ADD miaosha-1.0-SNAPSHOT.jar /app.jar
-RUN mkdir /conf
-RUN mkdir /logs
 RUN sh -c 'touch /app.jar'
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
 && echo 'Asia/Shanghai' >/etc/timezone
