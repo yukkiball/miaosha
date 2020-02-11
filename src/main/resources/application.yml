@@ -16,7 +16,7 @@ mybatis:
 spring:
   datasource:
     name: miaosha
-    url: jdbc:mysql://121.36.50.232:3306/miaosha?serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://172.17.0.4:3306/miaosha?serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
