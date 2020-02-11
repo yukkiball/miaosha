@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
 /**
  * @Auther: yuki
  * @Date: 2020/2/11 19:47
- * @Description:
+ * @Description: Redis实现分布式会话,将session存入redis缓存中
  */
+
 @Component
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
 public class RedisConfig {
