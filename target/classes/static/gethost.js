@@ -1,1 +1,1 @@
-var g_host = "localhost:8081";
+var g_host = "121.36.50.232:8081";

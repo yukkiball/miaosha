@@ -5,6 +5,7 @@ F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dao\SequenceDOMapper
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\validator\ValidatorImpl.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dao\ItemDOMapper.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dataobject\PromoDO.java
+F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\config\WebServerConfiguration.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dao\PromoDOMapper.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dao\RedisDao.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\error\CommonError.java
@@ -37,4 +38,5 @@ F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\service\OrderService
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\dataobject\OrderDO.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\service\PromoService.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\validator\ValidationResult.java
+F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\controller\GlobalExceptionHandler.java
 F:\DRL\JavaProject\miaosha\src\main\java\com\miaoshaproject\error\BusinessException.java
