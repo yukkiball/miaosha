@@ -10,12 +10,16 @@ import com.miaoshaproject.service.UserService;
 import com.miaoshaproject.service.model.UserModel;
 import com.miaoshaproject.validator.ValidationResult;
 import com.miaoshaproject.validator.ValidatorImpl;
+import org.apache.catalina.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author：yuki
@@ -34,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ValidatorImpl validator;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Override
     @Transactional
@@ -111,6 +118,17 @@ public class UserServiceImpl implements UserService {
         //通过用户id获取对应的用户加密密码信息
         UserPasswordDO userPasswordDO = userPasswordDOMapper.selectByUserId(userDO.getId());
         return convertFromDataObject(userDO, userPasswordDO);
+    }
+
+    @Override
+    public UserModel getUserByIdInCache(Integer id) {
+        UserModel userModel = (UserModel) redisTemplate.opsForValue().get("user_validate_"+id);
+        if (userModel == null){
+            userModel = this.getUserById(id);
+            redisTemplate.opsForValue().set("user_validate_"+id, userModel);
+            redisTemplate.expire("user_validate_"+id, 10, TimeUnit.MINUTES);
+        }
+        return userModel;
     }
 
     private UserModel convertFromDataObject(UserDO userDO, UserPasswordDO userPasswordDO){
