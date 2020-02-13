@@ -7,12 +7,14 @@ import com.miaoshaproject.dataobject.ItemDO;
 import com.miaoshaproject.dataobject.ItemStockDO;
 import com.miaoshaproject.error.BusinessException;
 import com.miaoshaproject.error.EmBusinessError;
+import com.miaoshaproject.mq.MqProducer;
 import com.miaoshaproject.service.ItemService;
 import com.miaoshaproject.service.PromoService;
 import com.miaoshaproject.service.model.ItemModel;
 import com.miaoshaproject.service.model.PromoModel;
 import com.miaoshaproject.validator.ValidationResult;
 import com.miaoshaproject.validator.ValidatorImpl;
+import org.apache.rocketmq.client.producer.SendResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -46,6 +48,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private MqProducer mqProducer;
 
     private ItemDO convertItemDOFromItemModel(ItemModel itemModel){
         if (itemModel == null){
@@ -150,11 +155,17 @@ public class ItemServiceImpl implements ItemService {
         //int affectedRow = itemStockDOMapper.decreaseStock(itemId, amount);
         long result = redisTemplate.opsForValue().increment("promo_item_stock_"+itemId,amount.intValue() * (-1));
 
+
         if (result >= 0){
             //更新库存成功
+            boolean mqResult = mqProducer.asyncReduceStock(itemId, amount);
+            if (!mqResult){
+                redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
+            }
             return true;
         }else{
             //更新库存失败
+            redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
             return false;
         }
 
