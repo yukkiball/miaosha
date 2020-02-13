@@ -141,6 +141,12 @@ public class ItemServiceImpl implements ItemService {
         return itemModel;
     }
 
+    @Override
+    public boolean asyncDecreaseStock(Integer itemId, Integer amount) {
+        boolean mqResult = mqProducer.asyncReduceStock(itemId, amount);
+        return mqResult;
+    }
+
     private ItemModel convertModelFromDataObject(ItemDO itemDO, ItemStockDO itemStockDO){
         ItemModel itemModel = new ItemModel();
         BeanUtils.copyProperties(itemDO, itemModel);
@@ -158,16 +164,28 @@ public class ItemServiceImpl implements ItemService {
 
         if (result >= 0){
             //更新库存成功
-            boolean mqResult = mqProducer.asyncReduceStock(itemId, amount);
-            if (!mqResult){
-                redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
-            }
+//            boolean mqResult = mqProducer.asyncReduceStock(itemId, amount);
+//            if (!mqResult){
+//                redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
+//            }
             return true;
         }else{
             //更新库存失败
-            redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
+            increaseStock(itemId, amount);
             return false;
         }
 
+    }
+
+    @Override
+    public boolean increaseStock(Integer itemId, Integer amount) throws BusinessException {
+        redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
+
+        return true;
+    }
+
+    @Override
+    public void increaseSales(Integer itemId, Integer amount) throws BusinessException {
+        itemDOMapper.increaseSales(itemId,amount);
     }
 }
