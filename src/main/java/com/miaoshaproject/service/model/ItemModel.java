@@ -3,6 +3,7 @@ package com.miaoshaproject.service.model;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
  * @Date: Created in 9:14 2019/11/13
  * @Modified By:
  */
-public class ItemModel {
+public class ItemModel implements Serializable {
     private Integer id;
 
     //商品名
