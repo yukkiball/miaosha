@@ -37,5 +37,5 @@ spring:
 
 mq:
   nameserver:
-    addr: 127.0.0.1:9876
+    addr: 121.36.50.232:9876
   topicname: stock
