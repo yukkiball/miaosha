@@ -48,3 +48,12 @@
 0:0:0:0:0:0:0:1 - - [13/Feb/2020:20:50:28 +0800] "GET /item/list HTTP/1.1" 200 570 71
 0:0:0:0:0:0:0:1 - - [13/Feb/2020:20:50:29 +0800] "GET /item/get?id=9 HTTP/1.1" 200 309 39
 0:0:0:0:0:0:0:1 - - [13/Feb/2020:20:51:59 +0800] "POST /order/createorder?token=ab32a7c6fab94289ac294ccd39e9b704 HTTP/1.1" 200 43 630
+127.0.0.1 - - [13/Feb/2020:21:01:40 +0800] "GET /item/publishpromo?id=1 HTTP/1.0" 200 32 982
+0:0:0:0:0:0:0:1 - - [13/Feb/2020:21:02:05 +0800] "POST /order/createorder?token=ab32a7c6fab94289ac294ccd39e9b704 HTTP/1.1" 200 98 140
+0:0:0:0:0:0:0:1 - - [13/Feb/2020:21:02:12 +0800] "POST /user/login HTTP/1.1" 200 73 81
+0:0:0:0:0:0:0:1 - - [13/Feb/2020:21:02:13 +0800] "GET /item/list HTTP/1.1" 200 568 29
+0:0:0:0:0:0:0:1 - - [13/Feb/2020:21:02:15 +0800] "GET /item/get?id=9 HTTP/1.1" 200 307 27
+0:0:0:0:0:0:0:1 - - [13/Feb/2020:21:02:18 +0800] "POST /order/createorder?token=9d4b41b124bc4e41ac7ba73331f6a534 HTTP/1.1" 200 43 361
+0:0:0:0:0:0:0:1 - - [13/Feb/2020:21:02:29 +0800] "POST /order/createorder?token=9d4b41b124bc4e41ac7ba73331f6a534 HTTP/1.1" 200 43 103
+0:0:0:0:0:0:0:1 - - [13/Feb/2020:21:02:41 +0800] "POST /order/createorder?token=9d4b41b124bc4e41ac7ba73331f6a534 HTTP/1.1" 200 77 9
+0:0:0:0:0:0:0:1 - - [13/Feb/2020:21:02:52 +0800] "POST /order/createorder?token=9d4b41b124bc4e41ac7ba73331f6a534 HTTP/1.1" 200 77 7
