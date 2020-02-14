@@ -17,8 +17,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.*;
 
 /**
  * @Author：yuki
@@ -39,16 +41,25 @@ public class OrderController extends BaseController {
     private HttpServletRequest httpServletRequest;
 
     @Autowired
-    RedisTemplate redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Autowired
-    MqProducer mqProducer;
+    private MqProducer mqProducer;
 
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
 
     @Autowired
-    PromoService promoService;
+    private PromoService promoService;
+
+    private ExecutorService executorService;
+
+
+    @PostConstruct
+    public void init(){
+        executorService = Executors.newFixedThreadPool(20);
+
+    }
 
     //生成秒杀令牌
     @RequestMapping(value = "/generatetoken", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
@@ -120,14 +131,33 @@ public class OrderController extends BaseController {
 //        OrderModel orderModel =  orderService.createOrder(userModel.getId(), itemId, promoId, amount);
 
 
-        //加入库存流水init状态
-        String stockLogId = itemService.initStockLog(itemId, amount);
+
+        //同步调用线程池的submit方法
+        //拥塞窗口为20的等待队列，来队列泄洪
+       Future<Object> future = executorService.submit(new Callable<Object>() {
+
+            @Override
+            public Object call() throws Exception {
+                //加入库存流水init状态
+                String stockLogId = itemService.initStockLog(itemId, amount);
 
 
-        //再去完成相应的下单事务型消息机制
-        if (!mqProducer.transactionAsyncReduceStock(userModel.getId(), itemId, promoId, amount, stockLogId)){
-            throw new BusinessException(EmBusinessError.UNKNOWN_ERROR, "下单失败");
+                //再去完成相应的下单事务型消息机制
+                if (!mqProducer.transactionAsyncReduceStock(userModel.getId(), itemId, promoId, amount, stockLogId)){
+                    throw new BusinessException(EmBusinessError.UNKNOWN_ERROR, "下单失败");
+                }
+                return null;
+            }
+        });
+
+        try {
+            future.get();
+        } catch (InterruptedException e) {
+            throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
+        } catch (ExecutionException e) {
+            throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
         }
+
         return CommonReturnType.create(null);
     }
 }
