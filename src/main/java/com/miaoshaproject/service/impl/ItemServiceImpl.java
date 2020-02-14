@@ -2,9 +2,10 @@ package com.miaoshaproject.service.impl;
 
 import com.miaoshaproject.dao.ItemDOMapper;
 import com.miaoshaproject.dao.ItemStockDOMapper;
-import com.miaoshaproject.dao.PromoDOMapper;
+import com.miaoshaproject.dao.StockLogDOMapper;
 import com.miaoshaproject.dataobject.ItemDO;
 import com.miaoshaproject.dataobject.ItemStockDO;
+import com.miaoshaproject.dataobject.StockLogDO;
 import com.miaoshaproject.error.BusinessException;
 import com.miaoshaproject.error.EmBusinessError;
 import com.miaoshaproject.mq.MqProducer;
@@ -14,7 +15,6 @@ import com.miaoshaproject.service.model.ItemModel;
 import com.miaoshaproject.service.model.PromoModel;
 import com.miaoshaproject.validator.ValidationResult;
 import com.miaoshaproject.validator.ValidatorImpl;
-import org.apache.rocketmq.client.producer.SendResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private MqProducer mqProducer;
+
+    @Autowired(required = false)
+    private StockLogDOMapper stockLogDOMapper;
 
     private ItemDO convertItemDOFromItemModel(ItemModel itemModel){
         if (itemModel == null){
@@ -141,6 +145,12 @@ public class ItemServiceImpl implements ItemService {
         return itemModel;
     }
 
+    @Override
+    public boolean asyncDecreaseStock(Integer itemId, Integer amount) {
+        boolean mqResult = mqProducer.asyncReduceStock(itemId, amount);
+        return mqResult;
+    }
+
     private ItemModel convertModelFromDataObject(ItemDO itemDO, ItemStockDO itemStockDO){
         ItemModel itemModel = new ItemModel();
         BeanUtils.copyProperties(itemDO, itemModel);
@@ -156,18 +166,51 @@ public class ItemServiceImpl implements ItemService {
         long result = redisTemplate.opsForValue().increment("promo_item_stock_"+itemId,amount.intValue() * (-1));
 
 
-        if (result >= 0){
+        if (result > 0){
             //更新库存成功
-            boolean mqResult = mqProducer.asyncReduceStock(itemId, amount);
-            if (!mqResult){
-                redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
-            }
+//            boolean mqResult = mqProducer.asyncReduceStock(itemId, amount);
+//            if (!mqResult){
+//                redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
+//            }
             return true;
-        }else{
+        }else if (result == 0){
+            //打上库存售罄的标识
+            redisTemplate.opsForValue().set("promo_item_stock_invalid"+itemId, "true");
+            return true;
+        } else{
             //更新库存失败
-            redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
+            increaseStock(itemId, amount);
             return false;
         }
 
+    }
+
+    @Override
+    public boolean increaseStock(Integer itemId, Integer amount) throws BusinessException {
+        redisTemplate.opsForValue().increment("promo_item_stock_"+itemId, amount.intValue());
+
+        return true;
+    }
+
+    //初始化库存流水
+    @Override
+    @Transactional
+    public String initStockLog(Integer itemId, Integer amount) {
+        StockLogDO stockLogDO = new StockLogDO();
+        stockLogDO.setItemId(itemId);
+        stockLogDO.setAmount(amount);
+        stockLogDO.setStockLogId(UUID.randomUUID().toString().replace("-", ""));
+        stockLogDO.setStatus(1);
+
+        stockLogDOMapper.insertSelective(stockLogDO);
+
+        return stockLogDO.getStockLogId();
+
+    }
+
+    @Override
+    @Transactional
+    public void increaseSales(Integer itemId, Integer amount) throws BusinessException {
+        itemDOMapper.increaseSales(itemId,amount);
     }
 }
