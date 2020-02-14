@@ -27,3 +27,14 @@
 0:0:0:0:0:0:0:1 - - [14/Feb/2020:15:08:57 +0800] "POST /order/generatetoken?token=5df8c41da69c43448a57246c86ebbd6c HTTP/1.1" 200 73 13
 0:0:0:0:0:0:0:1 - - [14/Feb/2020:15:08:57 +0800] "POST /order/createorder?token=5df8c41da69c43448a57246c86ebbd6c HTTP/1.1" 200 43 103
 0:0:0:0:0:0:0:1 - - [14/Feb/2020:15:08:58 +0800] "GET /item/get?id=9 HTTP/1.1" 200 323 6
+127.0.0.1 - - [14/Feb/2020:16:32:15 +0800] "GET /item/publishpromo?id=1 HTTP/1.0" 200 32 1078
+127.0.0.1 - - [14/Feb/2020:16:32:16 +0800] "GET /favicon.ico HTTP/1.0" 200 946 52
+0:0:0:0:0:0:0:1 - - [14/Feb/2020:16:32:25 +0800] "POST /user/login HTTP/1.1" 200 73 126
+0:0:0:0:0:0:0:1 - - [14/Feb/2020:16:32:26 +0800] "GET /item/list HTTP/1.1" 200 570 74
+0:0:0:0:0:0:0:1 - - [14/Feb/2020:16:32:27 +0800] "GET /item/get?id=9 HTTP/1.1" 200 323 76
+0:0:0:0:0:0:0:1 - - [14/Feb/2020:16:32:30 +0800] "GET /order/generateverifycode?token=313425191c394a8eacbd0122b2dbe288 HTTP/1.1" 200 1974 1667
+0:0:0:0:0:0:0:1 - - [14/Feb/2020:16:32:37 +0800] "POST /order/generatetoken?token=313425191c394a8eacbd0122b2dbe288 HTTP/1.1" 200 73 26
+0:0:0:0:0:0:0:1 - - [14/Feb/2020:16:32:38 +0800] "POST /order/createorder?token=313425191c394a8eacbd0122b2dbe288 HTTP/1.1" 200 43 557
+0:0:0:0:0:0:0:1 - - [14/Feb/2020:16:32:43 +0800] "GET /item/get?id=9 HTTP/1.1" 200 323 4
+0:0:0:0:0:0:0:1 - - [14/Feb/2020:16:32:52 +0800] "GET /item/get?id=9 HTTP/1.1" 200 323 7
+127.0.0.1 - - [14/Feb/2020:16:32:52 +0800] "GET /favicon.ico HTTP/1.0" 200 946 9
