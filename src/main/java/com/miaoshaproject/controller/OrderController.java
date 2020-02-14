@@ -1,5 +1,6 @@
 package com.miaoshaproject.controller;
 
+import com.google.common.util.concurrent.RateLimiter;
 import com.miaoshaproject.config.RedisConfig;
 import com.miaoshaproject.error.BusinessException;
 import com.miaoshaproject.error.EmBusinessError;
@@ -60,10 +61,13 @@ public class OrderController extends BaseController {
 
     private ExecutorService executorService;
 
+    private RateLimiter orderCreateRateLimiter;
 
     @PostConstruct
     public void init(){
         executorService = Executors.newFixedThreadPool(20);
+
+        orderCreateRateLimiter = RateLimiter.create(300);
 
     }
 
@@ -140,6 +144,11 @@ public class OrderController extends BaseController {
                                         @RequestParam(name="amount")Integer amount,
                                         @RequestParam(name = "promoId", required = false) Integer promoId,
                                         @RequestParam(name = "promoToken", required = false) String promoToken) throws BusinessException {
+
+
+        if (!orderCreateRateLimiter.tryAcquire(1, TimeUnit.SECONDS)){
+            throw new BusinessException(EmBusinessError.RATE_LIMIT);
+        }
 
 
         String token = httpServletRequest.getParameterMap().get("token")[0];
