@@ -1,3 +1,4 @@
+com\miaoshaproject\mq\MqProducer$1.class
 com\miaoshaproject\error\EmBusinessError.class
 com\miaoshaproject\dao\SequenceDOMapper.class
 com\miaoshaproject\dao\ItemDOMapper.class
@@ -15,8 +16,11 @@ com\miaoshaproject\service\UserService.class
 com\miaoshaproject\service\impl\PromoServiceImpl.class
 com\miaoshaproject\controller\BaseController.class
 com\miaoshaproject\dao\ItemStockDOMapper.class
+com\miaoshaproject\serializer\JodaDateTimeJsonSerializer.class
 com\miaoshaproject\dataobject\UserDO.class
+com\miaoshaproject\controller\OrderController$1.class
 com\miaoshaproject\error\CommonError.class
+com\miaoshaproject\mq\MqConsumer.class
 com\miaoshaproject\dao\UserPasswordDOMapper.class
 com\miaoshaproject\controller\GlobalExceptionHandler.class
 com\miaoshaproject\service\PromoService.class
@@ -25,10 +29,16 @@ com\miaoshaproject\service\impl\ItemServiceImpl.class
 com\miaoshaproject\error\BusinessException.class
 com\miaoshaproject\controller\OrderController.class
 com\miaoshaproject\service\impl\OrderServiceImpl.class
+com\miaoshaproject\mq\MqConsumer$1.class
 com\miaoshaproject\App.class
 com\miaoshaproject\controller\ItemController.class
 com\miaoshaproject\controller\UserController.class
+com\miaoshaproject\serializer\JodaDateTimeJsonDeserializer.class
+com\miaoshaproject\dataobject\StockLogDO.class
+com\miaoshaproject\mq\MqProducer.class
+com\miaoshaproject\service\CacheService.class
 com\miaoshaproject\service\model\PromoModel.class
+com\miaoshaproject\util\CodeUtil.class
 com\miaoshaproject\controller\viewobject\UserVO.class
 com\miaoshaproject\config\WebServerConfiguration.class
 com\miaoshaproject\dataobject\UserPasswordDO.class
@@ -42,3 +52,5 @@ com\miaoshaproject\dao\UserDOMapper.class
 com\miaoshaproject\service\model\OrderModel.class
 com\miaoshaproject\service\ItemService.class
 com\miaoshaproject\validator\ValidationResult.class
+com\miaoshaproject\dao\StockLogDOMapper.class
+com\miaoshaproject\service\impl\CacheServiceImpl.class
