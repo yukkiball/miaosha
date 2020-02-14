@@ -7,6 +7,7 @@ import com.miaoshaproject.mq.MqProducer;
 import com.miaoshaproject.response.CommonReturnType;
 import com.miaoshaproject.service.ItemService;
 import com.miaoshaproject.service.OrderService;
+import com.miaoshaproject.service.PromoService;
 import com.miaoshaproject.service.model.OrderModel;
 import com.miaoshaproject.service.model.UserModel;
 import org.apache.catalina.User;
@@ -46,12 +47,15 @@ public class OrderController extends BaseController {
     @Autowired
     ItemService itemService;
 
-    //封装下单请求
-    @RequestMapping(value = "/createorder", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @Autowired
+    PromoService promoService;
+
+    //生成秒杀令牌
+    @RequestMapping(value = "/generatetoken", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
     @ResponseBody
-    public CommonReturnType createOrder(@RequestParam(name="itemId")Integer itemId,
-                                        @RequestParam(name="amount")Integer amount,
-                                        @RequestParam(name = "promoId", required = false) Integer promoId) throws BusinessException {
+    public CommonReturnType generatetoken(@RequestParam(name="itemId")Integer itemId,
+                                        @RequestParam(name = "promoId") Integer promoId) throws BusinessException {
+
         String token = httpServletRequest.getParameterMap().get("token")[0];
         if (StringUtils.isEmpty(token)){
             throw new BusinessException(EmBusinessError.USER_NOT_LOGIN, "用户还未登录不能下单");
@@ -64,6 +68,53 @@ public class OrderController extends BaseController {
         if (userModel == null){
             throw new BusinessException(EmBusinessError.USER_NOT_LOGIN, "会话已过期，请重新登录");
         }
+        //获取秒杀访问令牌
+        String promoToken = promoService.generateSecondKillToken(promoId, itemId, userModel.getId());
+
+        if (promoToken == null){
+            throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "生成令牌失败");
+
+        }
+
+        //返回对应的结果
+        return CommonReturnType.create(promoToken);
+
+
+    }
+        //封装下单请求
+    @RequestMapping(value = "/createorder", method = {RequestMethod.POST}, consumes = {CONTENT_TYPE_FORMED})
+    @ResponseBody
+    public CommonReturnType createOrder(@RequestParam(name="itemId")Integer itemId,
+                                        @RequestParam(name="amount")Integer amount,
+                                        @RequestParam(name = "promoId", required = false) Integer promoId,
+                                        @RequestParam(name = "promoToken", required = false) String promoToken) throws BusinessException {
+
+
+        String token = httpServletRequest.getParameterMap().get("token")[0];
+        if (StringUtils.isEmpty(token)){
+            throw new BusinessException(EmBusinessError.USER_NOT_LOGIN, "用户还未登录不能下单");
+        }
+        //获取用户的登录信息
+        UserModel userModel = (UserModel)redisTemplate.opsForValue().get(token);
+
+//        Boolean isLogin = (Boolean)httpServletRequest.getSession().getAttribute("IS_LOGIN");
+        //会话已经过期，需要重新登录
+        if (userModel == null){
+            throw new BusinessException(EmBusinessError.USER_NOT_LOGIN, "会话已过期，请重新登录");
+        }
+
+        //校验秒杀令牌是否正确
+        if(promoId != null){
+            String inRedisPromoToken = (String)redisTemplate.opsForValue().get("promo_token_"+promoId+"_user_"+userModel.getId()+"_item_"+itemId);
+            if(inRedisPromoToken == null) {
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "秒杀令牌校验失败");
+            }
+
+            if (!StringUtils.equals(promoToken, inRedisPromoToken)){
+                throw new BusinessException(EmBusinessError.PARAMETER_VALIDATION_ERROR, "秒杀令牌校验失败");
+            }
+        }
+
 
         //UserModel userModel = (UserModel)httpServletRequest.getSession().getAttribute("LOGIN_USER");
 //        OrderModel orderModel =  orderService.createOrder(userModel.getId(), itemId, promoId, amount);
