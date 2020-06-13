@@ -1,0 +1,12 @@
+.idea/
+*.ipr
+*.iml
+*.iws
+target/
+*.jar
+!.mvn/wrapper/*
+.settings/
+.project
+.classpath
+*.dat
+examples/**/testapp/*.java
