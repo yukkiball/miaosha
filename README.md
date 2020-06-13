@@ -1,4 +1,4 @@
-# 电商秒杀系统
+# 电商秒杀系统(本地测试版本)
 
 基于Spring Boot，Spring MVC，MyBatis，Nginx，Redis，RocketMQ实现的电商秒杀系统
 
